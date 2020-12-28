@@ -70,16 +70,16 @@ var countDownCloak = function(options){
   this.insertCloack = function(){
 
     var box = $('<div id='+vars.cloakDivID+'>');
-    var content = '<h1 class="cloak-page-title">'+vars.titletext+'</h1>';
+    var content = '<h1 class="cloak-page-title" style="color:'+vars.titlecolor+'">'+vars.titletext+'</h1>';
       content += '<p class="cloak-page-desc">'+vars.desctext+'</p>';
-      content += '<div id="clockdiv">';
-      content += '<div><span class="days"></span><div class="smalltext">Days</div></div>';
-      content += '<div><span class="hours"></span><div class="smalltext">Hours</div></div>';
-      content += '<div><span class="minutes"></span><div class="smalltext">Minutes</div></div>';
-      content += '<div><span class="seconds"></span><div class="smalltext">Seconds</div></div>';
+      content += '<div id="clockdiv" style="color:'+vars.timertextcolor+';">';
+      content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="days" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Days</div></div>';
+      content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="hours" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Hours</div></div>';
+      content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="minutes" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Minutes</div></div>';
+      content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="seconds" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Seconds</div></div>';
       content += '</div>';
-      content += '<p class="cloak-page-desc2">'+vars.desctext2+'</p>';
-      content += '<div>';
+      content += '<p class="cloak-page-desc2" style="color:'+vars.desc2color+'">'+vars.desctext2+'</p>';
+
 
     box.css({
     	"position":"absolute",
@@ -89,7 +89,7 @@ var countDownCloak = function(options){
    	 	"width":"100%",
     	"height":"100vh",
     	"background-color": vars.bgcolor,
-    	"color": vars.textcolor,
+    	"color": vars.desc1color,
     });
 
     box.html(content);
@@ -140,9 +140,14 @@ $.ajax({
     titletext: params.title,
     desctext: params.desc,
     desctext2: params.desc2,
-    bgcolor: 'white',
-    titlecolor: 'black',
-    desccolor: 'gray',
+    bgcolor: params.bgcolor,
+    titlecolor: params.titlecolor,
+    desc1color: params.desc1color,
+    desc2color: params.desc2color,
+    timernumbercolor: params.timernumbercolor,
+    timertextcolor: params.timertextcolor,
+    timerboxinnercolor: params.timerboxinnercolor,
+    timerboxoutercolor: params.timerboxoutercolor,
   });
 
 

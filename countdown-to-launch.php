@@ -9,15 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if( is_admin() ){
-
     // settings menu and page
     require_once( plugin_dir_path( __FILE__ ) . 'countdown-to-launch-admin.php');
     $countdowntolaunch_settings_page = new CountdownToLaunchSettings();
-
 }
-
-
-
 
 function plugconstruct() {
 	return new countDownToLaunch();
@@ -29,7 +24,7 @@ class countDownToLaunch {
 
 	function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
-		add_action( 'wp_ajax_countdowntolaunch', array( $this, 'ajax_callback_countdowntolaunch_function' ) );
+		//add_action( 'wp_ajax_countdowntolaunch', array( $this, 'ajax_callback_countdowntolaunch_function' ) );
 	}
 
 	public function load_scripts() {
@@ -41,7 +36,7 @@ class countDownToLaunch {
 			array( 'jquery' )
 		);
 
-         $options = get_option( 'countdowntolaunch_options' );
+        $options = get_option( 'countdowntolaunch_options' );
 
         wp_localize_script( 'countdowntolaunch', 'params',
             array(
@@ -53,6 +48,15 @@ class countDownToLaunch {
                 'title' => $options['title'],
                 'desc' => $options['desc'],
                 'desc2' => $options['desc2'],
+
+                'bgcolor' => $options['bgcolor'],
+                'titlecolor' => $options['titlecolor'],
+                'desc1color' => $options['desc1color'],
+                'desc2color' => $options['desc2color'],
+                'timernumbercolor' => $options['timernumbercolor'],
+                'timertextcolor' => $options['timertextcolor'],
+                'timerboxinnercolor' => $options['timerboxinnercolor'],
+                'timerboxoutercolor' => $options['timerboxoutercolor'],
             )
         );
 
@@ -60,6 +64,7 @@ class countDownToLaunch {
 
     }
 
+    /*
     function ajax_callback_countdowntolaunch_function() {
 
         if ( check_ajax_referer( '_the_nonce', 'security' ) ) {
@@ -71,15 +76,5 @@ class countDownToLaunch {
             }
         }
     }
-    /*
-    function add_click_link() {
-
-        $ajax_nonce = wp_create_nonce( "countdowntolaunch" );
-
-        $link       = '<a href="#" class="some-link-class" id="testbutton" '
-				    . 'data-nonce="' . $ajax_nonce . '" data-somevar="' . $varX . '">klik here</a>';
-		return $link;
-
-	}
     */
 }

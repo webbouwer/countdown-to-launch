@@ -32,6 +32,13 @@ class CountdownToLaunchSettings
             'countdown-to-launch-setting-admin',
             array( $this, 'create_admin_page' )
         );
+
+        // load color picker - https://www.stacktips.com/tutorials/wordpress/how-to-implement-color-picker-in-wordpress
+        function wpse_80236_Colorpicker(){
+            wp_enqueue_style( 'wp-color-picker');
+            wp_enqueue_script( 'wp-color-picker');
+        }
+        add_action('admin_enqueue_scripts', 'wpse_80236_Colorpicker');
     }
 
 
@@ -43,6 +50,8 @@ class CountdownToLaunchSettings
     {
         // Set class property
         $this->options = get_option( 'countdowntolaunch_options' );
+
+
 
         ?>
         <div class="wrap">
@@ -71,6 +80,8 @@ class CountdownToLaunchSettings
                 $("#datepicker").datepicker({
                     dateFormat: "yy-mm-dd"
                 });
+                // Add Color Picker to all inputs that have 'color-field' class
+                $('.color-field').wpColorPicker();
             });
             </script>
         </div>
@@ -99,9 +110,16 @@ class CountdownToLaunchSettings
         );
 
         add_settings_section(
-            'setting_section_id', // ID
+            'setting_section_content', // ID
             'Settings', // Title
             array( $this, 'print_section2_info' ), // Callback
+            'countdown-to-launch-setting-admin' // Page
+        );
+
+        add_settings_section(
+            'setting_section_style', // ID
+            'Styling', // Title
+            array( $this, 'print_section3_info' ), // Callback
             'countdown-to-launch-setting-admin' // Page
         );
 
@@ -119,7 +137,7 @@ class CountdownToLaunchSettings
             'Title',
             array( $this, 'title_callback' ),
             'countdown-to-launch-setting-admin',
-            'setting_section_id'
+            'setting_section_content'
         );
 
         add_settings_field(
@@ -127,7 +145,7 @@ class CountdownToLaunchSettings
             'Description text 1',
             array( $this, 'desc_callback' ),
             'countdown-to-launch-setting-admin',
-            'setting_section_id'
+            'setting_section_content'
         );
 
         add_settings_field(
@@ -135,8 +153,71 @@ class CountdownToLaunchSettings
             'Description text 2',
             array( $this, 'desc2_callback' ),
             'countdown-to-launch-setting-admin',
-            'setting_section_id'
+            'setting_section_content'
         );
+
+
+        add_settings_field(
+            'bgcolor',
+            'Cloak background color',
+            array( $this, 'bg_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'titlecolor',
+            'Title color',
+            array( $this, 'title_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'desc1color',
+            'Description text 1 color',
+            array( $this, 'desc1_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'desc2color',
+            'Description text 2 color',
+            array( $this, 'desc2_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'timernumbercolor',
+            'Timer number color',
+            array( $this, 'timernumber_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'timertextcolor',
+            'Timer text color',
+            array( $this, 'timertext_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'timerboxinnercolor',
+            'Timer box inner color',
+            array( $this, 'timerboxinner_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+        add_settings_field(
+            'timerboxoutercolor',
+            'Timer box outer color',
+            array( $this, 'timerboxouter_colour_callback' ),
+            'countdown-to-launch-setting-admin',
+            'setting_section_style'
+        );
+
+
+
+
+
     }
 
     /**
@@ -167,6 +248,31 @@ class CountdownToLaunchSettings
           if( isset( $input['desc2'] ) )
             $new_input['desc2'] = sanitize_text_field( $input['desc2'] );
 
+          if( isset( $input['bgcolor'] ) )
+            $new_input['bgcolor'] = sanitize_text_field( $input['bgcolor'] );
+
+          if( isset( $input['titlecolor'] ) )
+            $new_input['titlecolor'] = sanitize_text_field( $input['titlecolor'] );
+
+          if( isset( $input['desc1color'] ) )
+            $new_input['desc1color'] = sanitize_text_field( $input['desc1color'] );
+
+          if( isset( $input['desc2color'] ) )
+            $new_input['desc2color'] = sanitize_text_field( $input['desc2color'] );
+
+          if( isset( $input['timernumbercolor'] ) )
+            $new_input['timernumbercolor'] = sanitize_text_field( $input['timernumbercolor'] );
+
+          if( isset( $input['timertextcolor'] ) )
+            $new_input['timertextcolor'] = sanitize_text_field( $input['timertextcolor'] );
+
+          if( isset( $input['timerboxinnercolor'] ) )
+            $new_input['timerboxinnercolor'] = sanitize_text_field( $input['timerboxinnercolor'] );
+
+          if( isset( $input['timerboxoutercolor'] ) )
+            $new_input['timerboxoutercolor'] = sanitize_text_field( $input['timerboxoutercolor'] );
+
+
         return $new_input;
     }
 
@@ -177,9 +283,13 @@ class CountdownToLaunchSettings
     {
         print 'Set launch time';
     }
-      public function print_section2_info()
+    public function print_section2_info()
     {
-        print 'Content and styling';
+        print 'Content';
+    }
+    public function print_section3_info()
+    {
+        print 'Styling';
     }
 
     /**
@@ -255,4 +365,68 @@ class CountdownToLaunchSettings
             isset( $this->options['desc2'] ) ? esc_attr( $this->options['desc2']) : ''
         );
     }
+
+
+    /**
+     * Colorpickers
+     */
+
+    public function bg_colour_callback()
+    {
+        printf(
+            '<input type="text" id="bgcolor" class="color-field" name="countdowntolaunch_options[bgcolor]" value="%s" />',
+            isset( $this->options['bgcolor'] ) ? esc_attr( $this->options['bgcolor']) : ''
+        );
+    }
+    public function title_colour_callback()
+    {
+        printf(
+            '<input type="text" id="titlecolor" class="color-field" name="countdowntolaunch_options[titlecolor]" value="%s" />',
+            isset( $this->options['titlecolor'] ) ? esc_attr( $this->options['titlecolor']) : ''
+        );
+    }
+    public function desc1_colour_callback()
+    {
+        printf(
+            '<input type="text" id="desc1color" class="color-field" name="countdowntolaunch_options[desc1color]" value="%s" />',
+            isset( $this->options['desc1color'] ) ? esc_attr( $this->options['desc1color']) : ''
+        );
+    }
+    public function desc2_colour_callback()
+    {
+        printf(
+            '<input type="text" id="desc2color" class="color-field" name="countdowntolaunch_options[desc2color]" value="%s" />',
+            isset( $this->options['desc2color'] ) ? esc_attr( $this->options['desc2color']) : ''
+        );
+    }
+    public function timernumber_colour_callback()
+    {
+        printf(
+            '<input type="text" id="timernumbercolor" class="color-field" name="countdowntolaunch_options[timernumbercolor]" value="%s" />',
+            isset( $this->options['timernumbercolor'] ) ? esc_attr( $this->options['timernumbercolor']) : ''
+        );
+    }
+    public function timertext_colour_callback()
+    {
+        printf(
+            '<input type="text" id="timertextcolor" class="color-field" name="countdowntolaunch_options[timertextcolor]" value="%s" />',
+            isset( $this->options['timertextcolor'] ) ? esc_attr( $this->options['timertextcolor']) : ''
+        );
+    }
+    public function timerboxinner_colour_callback()
+    {
+        printf(
+            '<input type="text" id="timerboxinnercolor" class="color-field" name="countdowntolaunch_options[timerboxinnercolor]" value="%s" />',
+            isset( $this->options['timerboxinnercolor'] ) ? esc_attr( $this->options['timerboxinnercolor']) : ''
+        );
+    }
+
+    public function timerboxouter_colour_callback()
+    {
+        printf(
+            '<input type="text" id="timerboxoutercolor" class="color-field" name="countdowntolaunch_options[timerboxoutercolor]" value="%s" />',
+            isset( $this->options['timerboxoutercolor'] ) ? esc_attr( $this->options['timerboxoutercolor']) : ''
+        );
+    }
+
 }
