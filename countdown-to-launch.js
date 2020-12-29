@@ -70,7 +70,7 @@ var countDownCloak = function(options){
   this.insertCloack = function(){
 
     var box = $('<div id='+vars.cloakDivID+'>');
-    var content = '<h1 class="cloak-page-title" style="color:'+vars.titlecolor+'">'+vars.titletext+'</h1>';
+    var content = '<div class="contentbox"><h1 class="cloak-page-title" style="color:'+vars.titlecolor+'">'+vars.titletext+'</h1>';
       content += '<p class="cloak-page-desc">'+vars.desctext+'</p>';
       content += '<div id="clockdiv" style="color:'+vars.timertextcolor+';">';
       content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="days" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Days</div></div>';
@@ -78,7 +78,7 @@ var countDownCloak = function(options){
       content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="minutes" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Minutes</div></div>';
       content += '<div style="background-color:'+vars.timerboxoutercolor+'"><span class="seconds" style="color:'+vars.timernumbercolor+';background-color:'+vars.timerboxinnercolor+'"></span><div class="smalltext">Seconds</div></div>';
       content += '</div>';
-      content += '<p class="cloak-page-desc2" style="color:'+vars.desc2color+'">'+vars.desctext2+'</p>';
+      content += '<p class="cloak-page-desc2" style="color:'+vars.desc2color+'">'+vars.desctext2+'</p></div>';
 
 
     box.css({

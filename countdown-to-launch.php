@@ -8,18 +8,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* check admin options */
 if( is_admin() ){
-    // settings menu and page
-    require_once( plugin_dir_path( __FILE__ ) . 'countdown-to-launch-admin.php');
-    $countdowntolaunch_settings_page = new CountdownToLaunchSettings();
+    require_once( plugin_dir_path( __FILE__ ) . 'countdown-to-launch-admin.php'); // class code
+    $countdowntolaunch_settings_page = new CountdownToLaunchSettings();  // settings in class
 }
-
+/* init base class */
 function plugconstruct() {
 	return new countDownToLaunch();
 }
-
 add_action( 'init', 'plugconstruct' );
 
+/* base class */
 class countDownToLaunch {
 
 	function __construct() {
@@ -30,21 +30,21 @@ class countDownToLaunch {
 	public function load_scripts() {
 
         wp_enqueue_style( 'custom', plugins_url( 'countdown-to-launch/countdown-to-launch.css', _FILE_ ) );
-
 	    wp_register_script( 'countdowntolaunch',
 			plugins_url( 'countdown-to-launch.js', __FILE__ ),
 			array( 'jquery' )
 		);
 
         $options = get_option( 'countdowntolaunch_options' );
-
         wp_localize_script( 'countdowntolaunch', 'params',
             array(
                 'ajaxurl' => admin_url( 'admin-ajax.php' ),
+
                 'date' => $options['datepicker'],
                 'hours' => $options['hours'],
                 'minutes' => $options['minutes'],
                 'seconds' => $options['seconds'],
+
                 'title' => $options['title'],
                 'desc' => $options['desc'],
                 'desc2' => $options['desc2'],
@@ -59,14 +59,10 @@ class countDownToLaunch {
                 'timerboxoutercolor' => $options['timerboxoutercolor'],
             )
         );
-
 		wp_enqueue_script( 'countdowntolaunch' );
-
     }
-
     /*
     function ajax_callback_countdowntolaunch_function() {
-
         if ( check_ajax_referer( '_the_nonce', 'security' ) ) {
             $somevar = $_POST['var_from_ajax_post'];
             if ( $somevar === 'false' ) {

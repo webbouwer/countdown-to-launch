@@ -39,6 +39,17 @@ class CountdownToLaunchSettings
             wp_enqueue_script( 'wp-color-picker');
         }
         add_action('admin_enqueue_scripts', 'wpse_80236_Colorpicker');
+
+        // insert datepicker css & js
+        /* <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> */
+        wp_enqueue_script( 'jquery-1.12.4', 'https://code.jquery.com/jquery-1.12.4.js' );
+        wp_enqueue_script( 'jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js' );
+        wp_enqueue_style( 'jquery-ui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+
+        // insert frontend base css
+        wp_enqueue_style( 'custom', plugins_url( 'countdown-to-launch/countdown-to-launch.css', _FILE_ ) );
     }
 
 
@@ -58,19 +69,42 @@ class CountdownToLaunchSettings
 
 
             <h1>Countdown to launch</h1>
+
+
             <form method="post" action="options.php">
+
+
+            <div class="settingspanel column">
             <?php
                 // This prints out all hidden setting fields
                 settings_fields( 'countdowntolaunch_option_group' );
                 do_settings_sections( 'countdown-to-launch-setting-admin' );
                 submit_button();
             ?>
+            </div>
+
+            <div class="stylingpanel column">
+
+                <div id="previewbox">
+
+                    <div id="cloak-page-container" style="position: absolute; text-align: center; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgb(0, 220, 255); color: rgb(0, 28, 51);">
+                        <div class="contentbox">
+                        <h1 class="cloak-page-title" style="color:#f97c00">Hang on!</h1>
+                        <p class="cloak-page-desc">We are ready in</p>
+                        <div id="clockdiv" style="color:#ffffff;"><div style="background-color:#1c3d89"><span class="days" style="color:#ffffff;background-color:#173270">15</span><div class="smalltext">Days</div></div><div style="background-color:#1c3d89"><span class="hours" style="color:#ffffff;background-color:#173270">07</span><div class="smalltext">Hours</div></div><div style="background-color:#1c3d89"><span class="minutes" style="color:#ffffff;background-color:#173270">36</span><div class="smalltext">Minutes</div></div><div style="background-color:#1c3d89"><span class="seconds" style="color:#ffffff;background-color:#173270">27</span><div class="smalltext">Seconds</div></div></div>
+                        <p class="cloak-page-desc2" style="color:#001c33">Nice to see you again!</p></div>
+                    </div>
+
+                </div>
+
+            </div>
+
             </form>
 
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-            <!--
+        </div>
+
+
+            <!-- Datepicker
                 https://stackoverflow.com/questions/65081799/using-jquery-datepicker-in-wordpress-backend
                 https://www.jqueryscript.net/time-clock/Bootstrap-4-Date-Time-Picker.html
                 https://trentrichardson.com/examples/timepicker/
@@ -84,7 +118,45 @@ class CountdownToLaunchSettings
                 $('.color-field').wpColorPicker();
             });
             </script>
-        </div>
+
+            <!-- Preview -->
+            <script>
+            $(document).ready(function () {
+
+                // update preview
+                function updatePreview(){
+                     alert('check!');
+                }
+
+                $(".wrap form").on('change', function(){
+                    updatePreview();
+                });
+
+                $(".wrap form button").on('click', function(){
+                    if( !$(this).parent().hasClass('wp-picker-active') ){
+                       updatePreview();
+                    }
+                });
+
+
+            });
+            </script>
+            <style>
+            @media only screen and (min-width: 943px) {
+                .wrap .column {
+                        width:50%;
+                        float:left;
+                }
+            }
+
+            #previewbox{
+                position:relative;
+                width:90%;
+                height:80vh;
+                margin:5% auto;
+                border:2px solid black;
+            }
+            </style>
 
         <?php
     }
@@ -101,6 +173,8 @@ class CountdownToLaunchSettings
             'countdowntolaunch_options', // Option name
             array( $this, 'sanitize' ) // Sanitize
         );
+
+
 
         add_settings_section(
             'setting_section_timer', // ID
